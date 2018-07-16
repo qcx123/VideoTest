@@ -7,7 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <TXVodPlayer.h>
 
 @interface QCXVideoView : UIView
+@property (nonatomic, strong) TXVodPlayer *player;
+
+
+
+
 
 @end
