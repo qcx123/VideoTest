@@ -11,4 +11,5 @@ pod 'TXLiteAVSDK_Professional', :podspec => 'http://pod-1252463788.cosgz.myqclou
 pod 'Masonry'
 pod 'SDWebImage'
 pod 'AFNetworking', '~> 3.0'
+pod 'MJRefresh'
 end

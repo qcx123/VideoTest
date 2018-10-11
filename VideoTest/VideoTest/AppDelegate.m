@@ -7,8 +7,9 @@
 //
 
 #import "AppDelegate.h"
-#import "QCXVideoViewController.h"
-#import "QCXNavigationController.h"
+#import "DKTabBarViewController.h"
+#import "AFNetworkReachabilityManager.h"
+#import "DKNetInfo.h"
 
 @interface AppDelegate ()
 
@@ -19,11 +20,13 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     
-    self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
-    QCXVideoViewController *vc = [[QCXVideoViewController alloc] init];
-    QCXNavigationController *nvc = [[QCXNavigationController alloc] initWithRootViewController:vc];
-    self.window.rootViewController = nvc;
+    DKTabBarViewController *tabVC = [[DKTabBarViewController alloc]init];
+    tabVC.tabBar.tintColor = [UIColor blackColor];
+    
+    self.window.rootViewController = tabVC;
     [self.window makeKeyAndVisible];
+    
+    [self netWorkChangeEvent];
     
     return YES;
 }
@@ -55,5 +58,46 @@
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 }
 
+#pragma mark - 检测网络状态变化
+-(void)netWorkChangeEvent
+{
+    AFNetworkReachabilityManager *manager = [AFNetworkReachabilityManager sharedManager];
+    //2.监听改变
+    [manager setReachabilityStatusChangeBlock:^(AFNetworkReachabilityStatus status) {
+        
+        switch (status) {
+                
+            case AFNetworkReachabilityStatusUnknown:
+                [DKNetInfo shareInstance].netType = NetType_Unknown;
+                NSLog(@"未知");
+                
+                break;
+                
+            case AFNetworkReachabilityStatusNotReachable:
+                [DKNetInfo shareInstance].netType = NetType_No;
+                NSLog(@"没有网络");
+                break;
+                
+            case AFNetworkReachabilityStatusReachableViaWWAN:
+                [DKNetInfo shareInstance].netType = NetType_3G4G;
+                NSLog(@"3G|4G");
+                break;
+                
+            case AFNetworkReachabilityStatusReachableViaWiFi:
+                [DKNetInfo shareInstance].netType = NetType_WIFI;
+                NSLog(@"WiFi");
+                
+                break;
+                
+            default:
+                [DKNetInfo shareInstance].netType = NetType_Unknown;
+                break;
+                
+        }
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"netWorkChangeEventNotification" object:@(status)];
+    }];
+    
+    [manager startMonitoring];//开始监听
+}
 
 @end

@@ -9,12 +9,20 @@
 #ifndef PrefixHeader_pch
 #define PrefixHeader_pch
 
-// Include any system framework and library headers here that should be included in all compilation units.
-// You will also need to set the Prefix Header build setting of one or more of your targets to reference this file.
+// 视频通知
+// Posted when first video/audio render
+#define MPMoviePlayerFirstVideoFrameRenderedNotification @"MPMoviePlayerFirstVideoFrameRenderedNotification"
+// Posted when the prepared state changes of an object conforming to the MPMediaPlayback protocol changes.
+// This supersedes MPMoviePlayerContentPreloadDidFinishNotification.
+#define MPMediaPlaybackIsPreparedToPlayDidChangeNotification @"MPMediaPlaybackIsPreparedToPlayDidChangeNotification"
 
-#define KScreenW [UIScreen mainScreen].bounds.size.width
-#define KScreenH [UIScreen mainScreen].bounds.size.height
-
+#define KScreenW ([UIScreen mainScreen].bounds.size.width)
+#define KScreenH ([UIScreen mainScreen].bounds.size.height)
+#define TabBar_HEIGHT 49.0f
 #import <Masonry.h>
+#import "UIView+Frame.h"
+#import "UIColor+Extension.h"
+
+#define PXTOPT(x) (x / 2.0)
 
 #endif /* PrefixHeader_pch */
